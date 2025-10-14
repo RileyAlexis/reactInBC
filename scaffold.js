@@ -35,26 +35,27 @@ function prompt(question, defaultValue) {
   execSync(`git clone ${TEMPLATE_REPO} "${DEST_DIR}"`, { stdio: "inherit" });
 
   // 3️⃣ Replace placeholders recursively
-function replacePlaceholders(dir) {
-  for (const file of fs.readdirSync(dir)) {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
-    if (stat.isDirectory()) {
-      replacePlaceholders(filePath);
-    } else if (stat.isFile()) {
-      let content = fs.readFileSync(filePath, "utf8");
-      // simple replacement for all variables
-      content = content
-        .replace(/{{appName}}/g, appName)
-        .replace(/{{publisher}}/g, publisher)
-        .replace(/{{bcPageName}}/g, bcPageName)
-        .replace(/{{tenantID}}/g, tenantID)
-        .replace(/{{idStartRange}}/g, idStartRange)
-        .replace(/{{idEndRange}}/g, idEndRange);
-      fs.writeFileSync(filePath, content, "utf8");
-    }
-  }
-}
+    function replacePlaceholders(dir) {
+      for (const file of fs.readdirSync(dir)) {
+        if (file === ".git") continue; // skip git folder
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+        if (stat.isDirectory()) {
+          replacePlaceholders(filePath);
+        } else if (stat.isFile()) {
+          let content = fs.readFileSync(filePath, "utf8");
+          content = content
+            .replace(/{{appName}}/g, appName)
+            .replace(/{{publisher}}/g, publisher)
+            .replace(/{{bcPageName}}/g, bcPageName)
+            .replace(/{{tenantID}}/g, tenantID)
+            .replace(/{{idStartRange}}/g, idStartRange)
+            .replace(/{{idEndRange}}/g, idEndRange);
+          fs.writeFileSync(filePath, content, "utf8");
+        }
+      }
+    } 
+
 
   console.log("Replacing placeholders...");
   replacePlaceholders(DEST_DIR);
@@ -71,6 +72,8 @@ function replacePlaceholders(dir) {
   const targetScripts = path.join(DEST_DIR, "app/scripts");
   fs.mkdirSync(targetScripts, { recursive: true });
   for (const file of fs.readdirSync(srcAssets)) {
+    const ext = path.extname(file).toLowerCase();
+    if (ext !== ".js" && ext !== ".css") continue; // skip other file types
     fs.copyFileSync(path.join(srcAssets, file), path.join(targetScripts, file));
   }
 
@@ -87,7 +90,7 @@ function replacePlaceholders(dir) {
 
   function replaceOrInsert(sectionName, files) {
     const regex = new RegExp(`${sectionName}\\s*=\\s*['\\"][^'\\"]*['\\"]`, "g");
-    const newSection = `${sectionName} = "${files.join('", "')}";`;
+    const newSection = `${sectionName} = "${files.join('", "')}"`;
     if (regex.test(alContent)) {
       alContent = alContent.replace(regex, newSection);
     } else {
