@@ -1,0 +1,48 @@
+{
+    "name": "reactInBC",
+    "description": "Vite template for scaffolding an AL extension with controlAddIn and React",
+    "prompts": [
+        {
+            "name" : "appName",
+            "type" : "string",
+            "message" : "What is the name of the BC Extension?",
+            "default": "reactInBC"
+        },
+        {
+            "name": "controlAddInName",
+            "type": "string",
+            "message": "What is the name of the controlAddIn?",
+            "default": "defaultControlAddIn"
+        },
+        {
+            "name": "bcPageName",
+            "type": "string",
+            "message": "Name of the BC Page to Create?",
+            "default": "reactInBCPage"
+        },
+        {
+            "name": "tenantID",
+            "type": "string",
+            "message": "Microsoft Tenant ID for SaaS Business Central",
+            "default": "none"
+        },
+        {
+            "name": "publisher",
+            "type": "string",
+            "message": "Publisher for Business Centeral",
+            "default": "default publisher"
+        },
+        {
+            "name": "idStartRange",
+            "type": "integer",
+            "message": "Enter starting range for AL Id",
+            "default": 50100
+        },
+        {
+            "name": "idEndRange",
+            "type": "integer",
+            "message": "Enter ending range for AL Id",
+            "default": 50150
+        }
+    ]
+}
