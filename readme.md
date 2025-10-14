@@ -20,7 +20,7 @@ Download the scaffold.js node script and run:
 
 Fill in the prompts. Script generates an extension:
 
-- <appNamne>/
+- appNamne/
 - react-app/
 - app/
 - postbuild.js
