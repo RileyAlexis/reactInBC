@@ -28,3 +28,13 @@ Fill in the prompts. Script generates an extension:
 ```cd app/ && code .```
 
 Download AL Symbols, Package the extension `Ctrl + ⇧ + P -> AL:Package`, and then deploy to the Sandbox: `Ctrl + ⇧ + P -> AL: Publish Without Debugging`. 
+
+### Build Web App and add Minified js files to AL extension
+
+The react app can be built locally using a dev server:
+```npm run dev```
+
+To build the react application using Typescript and add the minified code to the AL control add-in:
+```npm run build```
+
+This runs the postbuild.js script which removes the old js and css files and replaces them with the current build. It copies the minified js and css into the app/scripts folder and updates the control add-in with the new file names. 
