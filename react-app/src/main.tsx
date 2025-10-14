@@ -7,15 +7,20 @@ const rootElementId = (window.self !== window.top)
   ? "controlAddIn"
   : "root";
 
-  const rootElement = document.getElementById(rootElementId);
 
-  if (!rootElement) {
-    throw new Error(`Root element with id "${rootElementId} not found`);
+function mountApp() {
+  const container = document.getElementById(rootElementId)
+  if (container) {
+    createRoot(container).render(
+      <StrictMode>
+       <App />
+      </StrictMode>,
+    )
+  } else {
+    // Retry after a short delay if container is not yet present
+    setTimeout(mountApp, 50)
   }
+}
 
+document.addEventListener('DOMContentLoaded', mountApp);
 
-  createRoot(rootElement).render(
-    <StrictMode>
-      <App />
-    </StrictMode>
-  )
