@@ -8,7 +8,7 @@
             "environmentType": "Sandbox",
             "environmentName": "sandbox",
             "server": "https://businesscentral.dynamics.com",
-            "tenant": "{{tendantID}}",
+            "tenant": "{{tenantID}}",
             "startupObjectId": {{idStartRange}},
             "startupObjectType": "Page",
             "breakOnError": "All",
