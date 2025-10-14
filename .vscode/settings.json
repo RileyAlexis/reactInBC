@@ -1,8 +1,0 @@
-{
-    "al.ruleSetPath": "./app",
-    "al.packageCachePath": [
-        "./app/.alpackages"
-    ],
-    "al.snapshotOutputPath": "./app/.snapshots",
-    "al.rootNamespace": "app",
-}
