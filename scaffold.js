@@ -88,15 +88,21 @@ function prompt(question, defaultValue) {
   const alFilePath = path.join(alDir, alFiles[0]);
   let alContent = fs.readFileSync(alFilePath, "utf8");
 
-  function replaceOrInsert(sectionName, files) {
-    const regex = new RegExp(`${sectionName}\\s*=\\s*['\\"][^'\\"]*['\\"]`, "g");
-    const newSection = `${sectionName} = "${files.join('", "')}"`;
-    if (regex.test(alContent)) {
-      alContent = alContent.replace(regex, newSection);
-    } else {
-      alContent = alContent.replace(/\}$/, `    ${newSection}\n}`);
+    function replaceOrInsert(sectionName, files) {
+      // Match Scripts = '...' or Scripts = "..." (single or double quotes)
+      const regex = new RegExp(`${sectionName}\\s*=\\s*['"][^'"]*['"]`, 'g');
+
+      // Use single quotes for the new section
+      const newSection = `${sectionName} = '${files.join("', '")}'`;
+
+      if (regex.test(alContent)) {
+        alContent = alContent.replace(regex, newSection);
+      } else {
+        // If the section doesn't exist, insert before closing brace
+        alContent = alContent.replace(/\}$/, `    ${newSection}\n}`);
+      }
     }
-  }
+
 
   const jsFiles = fs.readdirSync(targetScripts).filter(f => f.endsWith(".js")).map(f => `scripts/${f}`);
   const cssFiles = fs.readdirSync(targetScripts).filter(f => f.endsWith(".css")).map(f => `scripts/${f}`);
