@@ -3,18 +3,19 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-function mountApp() {
-  const container = document.getElementById('controlAddIn')
-  if (container) {
-    createRoot(container).render(
-      <StrictMode>
-        <App />
-      </StrictMode>,
-    )
-  } else {
-    // Retry after a short delay if container is not yet present
-    setTimeout(mountApp, 50)
-  }
-}
+const rootElementId = (window.self !== window.top)
+  ? "controlAddIn"
+  : "root";
 
-document.addEventListener('DOMContentLoaded', mountApp)
+  const rootElement = document.getElementById(rootElementId);
+
+  if (!rootElement) {
+    throw new Error(`Root element with id "${rootElementId} not found`);
+  }
+
+
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  )
