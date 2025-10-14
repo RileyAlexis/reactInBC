@@ -20,10 +20,12 @@ Download the scaffold.js node script and run:
 
 Fill in the prompts. Script generates an extension:
 
-<appNamne>/
- --react-app/
- --app/
- --postbuild.js
+- <appNamne>/
+- react-app/
+- app/
+- postbuild.js
+
+Open the app/ folder in its own workspace. AL requires the app.json file be in the project root.
 
 ```cd app/ && code .```
 
