@@ -1,5 +1,5 @@
 {
-  "id": "f41ecb59-3f83-4c10-ab34-3ff59e4c6ab6",
+  "id": "{{AppId}}",
   "name": "{{appName}}",
   "publisher": "{{publisher}}",
   "version": "1.0.0.0",

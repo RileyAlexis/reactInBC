@@ -4,6 +4,17 @@ const path = require("path");
 const { execSync } = require("child_process");
 const readline = require("readline");
 
+function generateGUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+const appID = generateGUID();
+
+
 // Helper for prompts with default values
 function prompt(question, defaultValue) {
   return new Promise(resolve => {
@@ -50,12 +61,12 @@ function prompt(question, defaultValue) {
             .replace(/{{bcPageName}}/g, bcPageName)
             .replace(/{{tenantID}}/g, tenantID)
             .replace(/{{idStartRange}}/g, idStartRange)
-            .replace(/{{idEndRange}}/g, idEndRange);
+            .replace(/{{idEndRange}}/g, idEndRange)
+            .replace(/{{AppId}}/g, appID);
           fs.writeFileSync(filePath, content, "utf8");
         }
       }
     } 
-
 
   console.log("Replacing placeholders...");
   replacePlaceholders(DEST_DIR);
