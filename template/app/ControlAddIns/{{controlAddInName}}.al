@@ -6,7 +6,4 @@ controladdin {{appName}}ControlAddIn
     RequestedWidth = 800;
     VerticalStretch = true;
     HorizontalStretch = true;
-
-    Scripts = ["scripts/index-Dv9QCkJa.js"]
-    StyleSheets = ["scripts/index-D8b4DHJx.css"]
 }
