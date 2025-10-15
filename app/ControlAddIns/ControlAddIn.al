@@ -6,4 +6,7 @@ controladdin {{appName}}ControlAddIn
     RequestedWidth = 800;
     VerticalStretch = true;
     HorizontalStretch = true;
+
+    procedure SendDataToReact(messageData: Text);
+    event ReceiveDataFromReact(messageData: Text)
 }
