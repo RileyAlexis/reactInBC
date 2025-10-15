@@ -23,9 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
-./app/alpackages/*
-./app/snapshots/*
+app/alpackages/*
+app/snapshots/*
 *.app
-./app/scripts/*.js
-./app/scripts/*.css
+app/scripts/*.js
+app/scripts/*.css
 
