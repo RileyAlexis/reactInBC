@@ -1,34 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [bcData, setBcData] = useState<any | null>(null);
+
+  useEffect(() => {
+  const handler = (e: Event): void => {
+    const customEvent = e as CustomEvent;
+    setBcData(customEvent.detail);
+    console.log(bcData);
+  };
+  window.addEventListener('BCData', handler);
+  return () => {
+    window.removeEventListener('BCData', handler);
+  }
+}, [bcData]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <ul>
+      {bcData &&
+      bcData.map((item:any) => {
+        <li>{item}</li>
+      })
+    }
+    </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
   )
 }
 

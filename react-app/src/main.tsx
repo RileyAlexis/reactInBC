@@ -24,3 +24,13 @@ function mountApp() {
 
 document.addEventListener('DOMContentLoaded', mountApp);
 
+(window as any).SendDataToReact = (jsonData:string) => {
+  try {
+    const data = JSON.parse(jsonData);
+
+    const event = new CustomEvent('BCData', { detail: data });
+      window.dispatchEvent(event);
+  } catch (e) {
+    console.error('Invalid Json from BC:', e, jsonData);
+  }
+}
