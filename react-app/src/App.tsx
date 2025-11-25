@@ -1,17 +1,45 @@
-import {useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { GetMockData } from './Components/GetMockData';
 
-function App() {
-  const [bcData, setBcData] = useState<any | null>(null);
+// BC Record Types
+export interface BCField {
+  id: number;
+  name: string;
+  type: string;
+  value: any;
+}
 
-interface BCDataType {
+export interface BCPrimaryKey {
+  fieldCount: number;
+  fields: BCField[];
+}
+
+export interface BCRecord {
+  id: number;
+  name: string;
+  company: string;
+  position: string;
+  recordId: string;
+  primaryKey: BCPrimaryKey;
+  fields: BCField[];
+}
+
+export interface SimpleRecord {
+  recordLine: number;
+  tableName: string;
+  company: string;
+  recordId: string;
   [key: string]: any;
 }
+
+function App() {
+  const [_, setRecords] = useState<SimpleRecord[]>([]);
 
   useEffect(() => {
     const handler = (e: Event): void => {
       const customEvent = e as CustomEvent;
-      setBcData(customEvent.detail);
+      setRecords(customEvent.detail);
       console.log(customEvent.detail);
     };
     window.addEventListener('BCData', handler);
@@ -22,16 +50,8 @@ interface BCDataType {
 
   return (
     <div className='primaryContainer'>
-      <ul>
-        {bcData.length > 0 ? (
-          bcData.map((item: BCDataType, index: number) => (
-            <li key={index}>{item.ItemNo} - {item.LocationCode}</li>
-          ))
-        ) : (
-          <li>No data received</li>
-        )}
-      </ul>
-      </div>
+      <GetMockData />
+    </div>
   )
 }
 

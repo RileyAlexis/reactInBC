@@ -1,75 +1,21 @@
-# React + TypeScript + Vite
+# React 19 in Microsoft Business Central
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template creates a basic Business Central Application Language Control Add In page using React 19. It contains necessary functions for pulling data from a Business Central SaaS instance and saving it as JSON to facilitate local development. It also creates the basic functions for passing data between React and BC. 
 
-Currently, two official plugins are available:
+Current development has React being read only for tables. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Scripts
 
-## React Compiler
+- scaffold.js - Download and run this file using Node in order to build the template application. It will place the BC Application Language extension in the app/ folder with the React application in react-app/. 
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Building
 
-Note: This will impact Vite dev & build performances.
+To build and deploy run ```react-app/npm run build```. Once the typescript is built the postbuild script will run. This takes the built and minified javascript and CSS and updates the AL Control Add In file names to use the updated React code. Then build with the AL Language Extension (Package + Publish) to upload the extension to a Business Central SaaS sandbox instance. 
 
-## Expanding the ESLint configuration
+### Dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Requires Node and Vite plus access to a Microsoft Business Central SaaS system with an account that has Super User permissions (required for uploading extensions).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Data
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The React App defaults to displaying the GetMockData component. Once published to Business Central this allows the downloading of records in JSON format from any table. Entering 0 in the MaxRecords field will download the entire table, which can be a large amount of data depending on the table. Clicking the download button downloads the JSON table data which can be saved in the ```public/mockData``` folder. This allows local development using the standard Vite/Node dev server since the react-app checks for localhost and then substitutes the JSON files for data received directly from BC. 
