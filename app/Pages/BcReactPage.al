@@ -15,43 +15,32 @@ page {{idStartRange}} "{{bcPageName}}"
                     message(messageData);
                 end;
 
-                trigger GetTable(tableNumber: Integer; filterField: Integer; filterText: Text)
+                trigger GetTable(tableNumber: Integer; maxRecords: Integer; filterField: Integer; filterText: Text)
                 var
                     RecRef: RecordRef;
                     filterRef: FieldRef;
                     filterString: Text;
                     jsonHelper: Codeunit JsonHelper;
-                    jsonReader: Codeunit "Json Text Reader/Writer";
                     json: Codeunit Json;
                     rec: Variant;
-                    jsonManage: Codeunit "JSON Management";
                     data: Text;
                     jsonArray: JsonArray;
                     recordCounter: Integer;
-
                 begin
                     RecRef.Open(tableNumber);
                     recordCounter := 0;
-                    if filterField > 0 then begin
+
+                    // Only apply filter if both filterField and filterText are provided
+                    if (filterField > 0) and (filterText <> '') then begin
                         filterRef := RecRef.Field(filterField);
-
-                        Message('%1 - %2', filterRef.value, filterText);
-
                         filterString := StrSubstNo('WHERE(%1=1(%2))', filterRef.Name, filterText);
                         RecRef.SetView(filterString);
                     end;
-
-
                     if RecRef.FindSet() then begin
-
-                        repeat
-                            jsonArray.Add(jsonHelper.RecordToJson(RecRef));
-                            recordCounter += 1;
-                        until (RecRef.Next() = 0) or (recordCounter = 10);
+                        jsonArray.Add(jsonHelper.RecordsToJsonArrayWithHeader(RecRef, maxRecords));
                     end;
                     jsonArray.WriteTo(data);
-
-                    CurrPage.WarehouseMover.SendDataToReact(data);
+                    CurrPage.{{appName}}ControlAddIn.SendDataToReact(data);
 
                 end;
              }
@@ -75,7 +64,7 @@ page {{idStartRange}} "{{bcPageName}}"
                 begin
                     if customerRecord.FindSet() then begin
                         refRecord.GetTable(customerRecord);
-                        jsonArray := JsonHelper.RecordToJsonArray(refRecord);
+                        jsonArray := JsonHelper.RecordToJsonArrayWithHeader(refRecord);
                         Message('JSON: %1', jsonArray);
                         CurrPage.{{bcPageName}}.SendDataToReact(jsonArray);
                     end;

@@ -9,6 +9,5 @@ controladdin {{appName}}ControlAddIn
 
     procedure SendDataToReact(messageData: Text);
     event ReceiveDataFromReact(messageData: Text);
-    event GoToPage(i: Integer);
     event GetTable(tableNumber: Integer; filterField: Integer; filterText: Text);
 }
